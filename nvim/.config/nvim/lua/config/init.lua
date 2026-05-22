@@ -1,0 +1,6 @@
+require("config.options")
+require("config.lazy")
+require("config.keymaps")
+require("config.lsp_config")
+require("config.snacks_things")
+require('config.mini-files-setup')
