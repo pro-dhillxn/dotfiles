@@ -1,6 +1,9 @@
 return {
     'stevearc/aerial.nvim',
-    opts = {},
+    opts = {
+        -- Disable aerial on files with this many lines
+        disable_max_lines = 80000,
+    },
     cmd = { 'AerialToggle' },
     -- Optional dependencies
     dependencies = {

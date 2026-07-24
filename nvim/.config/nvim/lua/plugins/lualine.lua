@@ -10,7 +10,11 @@ return {
                 return "(" .. count .. ")"
             end },
             lualine_b = { 'buffers' },
+        },
+        sections = { -- Bottom Statusline
+            lualine_c = { { 'filename', path = 1 } }
         }
+
     }
 }
 

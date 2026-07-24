@@ -32,20 +32,35 @@ opt.signcolumn = "yes" -- show git diagnostics and all signs overlayed on line n
 
 
 -- Clipboard Setup using clip.exe for WSL:
+-- if vim.fn.has("wsl") == 1 then
+--     vim.g.clipboard = {
+--         name = "WslClipboard",
+--         copy = {
+--             ["+"] = "clip.exe",
+--             ["*"] = "clip.exe",
+--         },
+--         paste = {
+--             ["+"] = 'powershell.exe -NoProfile -Command Get-Clipboard',
+--             ["*"] = 'powershell.exe -NoProfile -Command Get-Clipboard',
+--         },
+--         cache_enabled = 0,
+--     }
+-- end
 if vim.fn.has("wsl") == 1 then
     vim.g.clipboard = {
-        name = "WslClipboard",
+        name = "win32yank",
         copy = {
-            ["+"] = "clip.exe",
-            ["*"] = "clip.exe",
+            ["+"] = "win32yank.exe -i --crlf",
+            ["*"] = "win32yank.exe -i --crlf",
         },
         paste = {
-            ["+"] = 'powershell.exe -NoProfile -Command Get-Clipboard',
-            ["*"] = 'powershell.exe -NoProfile -Command Get-Clipboard',
+            ["+"] = "win32yank.exe -o --lf",
+            ["*"] = "win32yank.exe -o --lf",
         },
         cache_enabled = 0,
     }
 end
+
 
 vim.opt.clipboard = "unnamedplus" -- use system clipboard
 
@@ -54,9 +69,13 @@ opt.swapfile = true -- yes we want it
 opt.undofile = true -- enable persistent undo
 
 -- Folds
-opt.foldmethod = "expr"
-opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-opt.foldenable = false
+-- opt.foldmethod = "expr"
+-- opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+-- opt.foldenable = false
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldlevel = 99 -- Keep folds open by default
+vim.opt.foldlevelstart = 99
 
 -- C Compiler mingw for windows
 if vim.fn.has("win32") == 1 then

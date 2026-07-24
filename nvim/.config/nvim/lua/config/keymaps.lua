@@ -152,3 +152,18 @@ keymap.set(
     "o# %% <CR><CR># %%<Up>",
     { desc = "Create a new Python Cell at current location" }
 )
+
+
+-- -- treesitter keymaps
+-- vim.keymap.set({ "x", "o" }, "af", function()
+--     require("nvim-treesitter-textobjects.select").select_textobject("@function.outer", "textobjects")
+-- end)
+
+vim.keymap.set("n", "<leader>tr", function() require("neotest").run.run() end, { desc = "Run Nearest Test" })
+
+-- Toggle the interactive visual test summary panel (great for big applications)
+vim.keymap.set("n", "<leader>ts", function() require("neotest").summary.toggle() end, { desc = "Toggle Test Summary" })
+
+-- Toggle the output panel for the current test to see print statements/panics
+vim.keymap.set("n", "<leader>to", function() require("neotest").output_panel.toggle() end,
+    { desc = "Toggle Output Panel" })

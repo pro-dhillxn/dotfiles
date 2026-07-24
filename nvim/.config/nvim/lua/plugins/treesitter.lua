@@ -1,7 +1,7 @@
 return {
     "nvim-treesitter/nvim-treesitter",
-    lazy = false,
     build = ":TSUpdate",
+    lazy = false,
 
     config = function()
         require("nvim-treesitter").setup({
@@ -13,7 +13,8 @@ return {
                 "sql",
                 "yaml",
                 "rust",
-                "json"
+                "json",
+                "jsonc", -- optional but useful
             },
 
             auto_install = true,

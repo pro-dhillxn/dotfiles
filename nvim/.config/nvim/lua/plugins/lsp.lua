@@ -20,7 +20,8 @@ return {
     -- 2. mason-lspconfig — owns the dep chain for the whole LSP stack
     {
         "mason-org/mason-lspconfig.nvim",
-        event = "BufReadPre",
+        -- event = "BufReadPre",
+        lazy = false,
         dependencies = {
             { "mason-org/mason.nvim", opts = {} },
             "neovim/nvim-lspconfig",

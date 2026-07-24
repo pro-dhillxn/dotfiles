@@ -16,21 +16,10 @@ vim.lsp.config("basedpyright", {
 })
 
 
-vim.lsp.config("rust_analyzer", {
-    settings = {
-        ["rust-analyzer"] = {
-            checkOnSave = true,
-            check = {
-                command = "clippy",
-            },
-            inlayHints = {
-                bindingModeHints = { enable = true },
-                chainingHints = { enable = true },
-                closingBraceHints = { enable = true },
-            },
-        },
-    },
-})
+-- NOTE: rust-analyzer is intentionally NOT configured or enabled here.
+-- rustaceanvim (see lua/plugins/neotest_rust_adapter.lua) owns the
+-- rust-analyzer client. Enabling it via lspconfig too would attach a
+-- second client, causing duplicate completion/hover/inlay entries.
 
 
 vim.lsp.config('lua_ls', {
@@ -43,9 +32,11 @@ vim.lsp.config('lua_ls', {
     },
 })
 
-vim.lsp.config('yamlls',{})
+vim.lsp.config('yamlls', {})
 
-vim.lsp.enable({ "lua_ls", "basedpyright", "rust_analyzer", "yamlls" })
+vim.lsp.config('jsonls', {})
+
+vim.lsp.enable({ "lua_ls", "basedpyright", "yamlls", "jsonls" })
 
 -- ── Diagnostic appearance ─────────────────────────────────────────
 vim.diagnostic.config({
