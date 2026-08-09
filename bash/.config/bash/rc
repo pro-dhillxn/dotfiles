@@ -1,4 +1,5 @@
-# ~/.bashrc
+# ~/.config/bash/rc
+# Shared bash config — sourced from ~/.bashrc on each system
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -14,7 +15,6 @@ alias oc='opencode'
 alias c='claude'
 alias v='view -'
 alias t='tmux'
-alias pya='python /mnt/c/Users/USER/Projects/Python/Automation/mj.py'
 alias ex='explorer.exe'
 
 # Yazi to cd into directory as we exit it
@@ -51,8 +51,6 @@ eval "$(fzf --bash)"
 
 # Temporary note / scratchpad command
 alias snote='nvim -c "setlocal buftype=nofile" -c "startinsert"'
-
-[ -f ~/.bashrc.local ] && source ~/.bashrc.local
 
 # enabling vi mode
 set -o vi
