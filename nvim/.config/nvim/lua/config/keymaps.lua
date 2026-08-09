@@ -93,21 +93,6 @@ keymap.set("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease Wi
 keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
 keymap.set('t', 'jk', '<C-\\><C-n>', { noremap = true, silent = true })
 
--- venv activated terminal
-vim.keymap.set("n", "<leader>ta", function()
-    Snacks.terminal(nil, { cwd = vim.fn.getcwd() })
-    vim.defer_fn(function()
-        vim.cmd("startinsert")
-        local activate_cmd
-        if vim.fn.has('win32') == 1 or vim.fn.has("win64") == 1 then
-            activate_cmd = "source .venv/Scripts/activate"
-        else
-            activate_cmd = "source .venv/bin/activate"
-        end
-        local keys = vim.api.nvim_replace_termcodes(activate_cmd .. "<CR>", true, false, true)
-        vim.api.nvim_feedkeys(keys, "t", false)
-    end, 200)
-end, { desc = "Activate .venv in Floating Terminal" })
 
 -- run current python file
 vim.keymap.set(
