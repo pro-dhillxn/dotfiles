@@ -4,5 +4,5 @@
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
-source $HOME/.config/broot/launcher/bash/br
+[[ -f $HOME/.config/broot/launcher/bash/br ]] && source $HOME/.config/broot/launcher/bash/br
 . "$HOME/.cargo/env"
