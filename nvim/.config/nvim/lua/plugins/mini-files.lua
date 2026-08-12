@@ -4,12 +4,22 @@ return {
     config = function()
         local nsMiniFiles = vim.api.nvim_create_namespace("mini_files_git")
         local autocmd = vim.api.nvim_create_autocmd
-        local _, MiniFiles = pcall(require, "mini.files")
+        local ok, MiniFiles = pcall(require, "mini.files")
+        if not ok then
+            return
+        end
 
         -- Cache for git status
         local gitStatusCache = {}
         local cacheTimeout = 2000 -- in milliseconds
         local uv = vim.uv or vim.loop
+
+        -- Cache of ignored paths (per git root), used by the "show/hide gitignored" toggle
+        local ignoredPathsCache = {}
+
+        -- Toggle state for filters
+        local show_dotfiles = true
+        local show_gitignored = true
 
         local function isSymlink(path)
             local stat = uv.fs_lstat(path)
@@ -189,11 +199,84 @@ return {
         ---@return nil
         local function clearCache()
             gitStatusCache = {}
+            ignoredPathsCache = {}
         end
 
         local function augroup(name)
             return vim.api.nvim_create_augroup("MiniFiles_" .. name, { clear = true })
         end
+
+        -- ===== show/hide dotfiles + gitignored files =====
+
+        ---@param path string absolute path of the fs entry
+        ---@return boolean
+        local function isGitIgnored(path)
+            local root = vim.fs.root(path, ".git")
+            if not root then
+                return false
+            end
+
+            if not ignoredPathsCache[root] then
+                local set = {}
+                local ok_sys, result = pcall(function()
+                    return vim.system(
+                        { "git", "status", "--ignored", "--porcelain" },
+                        { text = true, cwd = root }
+                    ):wait()
+                end)
+                if ok_sys and result and result.code == 0 then
+                    for line in result.stdout:gmatch("[^\r\n]+") do
+                        local status, filePath = line:match("^(..)%s+(.*)")
+                        if status == "!!" then
+                            set[(filePath:gsub("/$", ""))] = true
+                        end
+                    end
+                end
+                ignoredPathsCache[root] = set
+            end
+
+            local relativePath = path:gsub("^" .. vim.pesc(root) .. "/", "")
+            return ignoredPathsCache[root][relativePath] == true
+        end
+
+        ---@param fs_entry table
+        ---@return boolean
+        local function file_filter(fs_entry)
+            if not show_dotfiles and vim.startswith(fs_entry.name, ".") then
+                return false
+            end
+            if not show_gitignored and isGitIgnored(fs_entry.path) then
+                return false
+            end
+            return true
+        end
+
+        -- Re-apply the filter and re-draw git status signs/colors on the current explorer
+        local function refreshExplorer()
+            local buf_id = vim.api.nvim_get_current_buf()
+            MiniFiles.refresh({ content = { filter = file_filter } })
+            updateGitStatus(buf_id)
+        end
+
+        local function toggleDotfiles()
+            show_dotfiles = not show_dotfiles
+            vim.notify(show_dotfiles and "Showing dotfiles" or "Hiding dotfiles")
+            refreshExplorer()
+        end
+
+        local function toggleGitignored()
+            show_gitignored = not show_gitignored
+            -- Drop the cache so newly (un)ignored files are picked up
+            ignoredPathsCache = {}
+            vim.notify(show_gitignored and "Showing gitignored files" or "Hiding gitignored files")
+            refreshExplorer()
+        end
+
+        MiniFiles.setup({
+            content = {
+                filter = file_filter,
+            },
+        })
 
         autocmd("User", {
             group = augroup("start"),
@@ -223,5 +306,24 @@ return {
                 end
             end,
         })
+
+        -- Buffer-local keymaps for every mini.files buffer (root + any opened sub-dirs)
+        autocmd("User", {
+            group = augroup("keymaps"),
+            pattern = "MiniFilesBufferCreate",
+            callback = function(args)
+                local buf_id = args.data.buf_id
+                vim.keymap.set("n", ".", toggleDotfiles, { buffer = buf_id, desc = "Toggle dotfiles" })
+                vim.keymap.set("n", "gi", toggleGitignored, { buffer = buf_id, desc = "Toggle gitignored files" })
+            end,
+        })
+
+        -- Open/close mini.files with <leader>e
+        vim.keymap.set("n", "<leader>e", function()
+            if not MiniFiles.close() then
+                local path = vim.api.nvim_buf_get_name(0)
+                MiniFiles.open(path ~= "" and path or uv.cwd(), false)
+            end
+        end, { desc = "Toggle file explorer (mini.files)" })
     end
 }
