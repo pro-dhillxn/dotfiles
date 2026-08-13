@@ -90,6 +90,14 @@ return {
         ---@return nil
         local function updateMiniWithGit(buf_id, gitStatusMap)
             vim.schedule(function()
+                if not vim.api.nvim_buf_is_valid(buf_id) then
+                    return
+                end
+                -- Clear previously drawn signs/highlights first, otherwise toggling
+                -- filters (which re-lays-out the same buffer) leaves stale extmarks
+                -- on old line numbers, causing wrong/duplicated labels.
+                vim.api.nvim_buf_clear_namespace(buf_id, nsMiniFiles, 0, -1)
+
                 local nlines = vim.api.nvim_buf_line_count(buf_id)
                 local cwd = vim.fs.root(buf_id, ".git")
                 local escapedcwd = cwd and vim.pesc(cwd)
@@ -251,17 +259,10 @@ return {
             return true
         end
 
-        -- Re-apply the filter and re-draw git status signs/colors on the current explorer
-        local function refreshExplorer()
-            local buf_id = vim.api.nvim_get_current_buf()
-            MiniFiles.refresh({ content = { filter = file_filter } })
-            updateGitStatus(buf_id)
-        end
-
         local function toggleDotfiles()
             show_dotfiles = not show_dotfiles
             vim.notify(show_dotfiles and "Showing dotfiles" or "Hiding dotfiles")
-            refreshExplorer()
+            MiniFiles.refresh({ content = { filter = file_filter } })
         end
 
         local function toggleGitignored()
@@ -269,7 +270,7 @@ return {
             -- Drop the cache so newly (un)ignored files are picked up
             ignoredPathsCache = {}
             vim.notify(show_gitignored and "Showing gitignored files" or "Hiding gitignored files")
-            refreshExplorer()
+            MiniFiles.refresh({ content = { filter = file_filter } })
         end
 
         MiniFiles.setup({
@@ -313,7 +314,7 @@ return {
             pattern = "MiniFilesBufferCreate",
             callback = function(args)
                 local buf_id = args.data.buf_id
-                vim.keymap.set("n", ".", toggleDotfiles, { buffer = buf_id, desc = "Toggle dotfiles" })
+                vim.keymap.set("n", "g.", toggleDotfiles, { buffer = buf_id, desc = "Toggle dotfiles" })
                 vim.keymap.set("n", "gi", toggleGitignored, { buffer = buf_id, desc = "Toggle gitignored files" })
             end,
         })
