@@ -44,6 +44,8 @@ eval "$(starship init bash)"
 # default editor
 export EDITOR=nvim
 export VISUAL=nvim
+alias e='$EDITOR'
+alias se='sudo $EDITOR'
 
 # fzf
 eval "$(fzf --bash)"
@@ -56,3 +58,18 @@ alias snote='nvim -c "setlocal buftype=nofile" -c "startinsert"'
 set -o vi
 
 export PATH="$HOME/.local/bin:$PATH"
+
+
+# git commands
+alias ga='git add'
+alias gf='git fetch'
+alias gp='git pull'
+alias gfp='git fetch && git pull'
+alias gs='git stash'  # same as git stash push
+alias gsm='git stash -m' # git stash push with a message
+alias gsp='git stash pop'
+
+
+# nvim for manpages
+export MANPAGER='nvim +Man!'
+
