@@ -107,22 +107,22 @@ vim.keymap.set(
     }
 )
 
--- dbt-helpers keybindings
-vim.keymap.set("n", "<leader>dr", function()
-    require("dbt-helpers").insert_ref()
-end, { desc = "dbt: Insert ref() manually" })
-
-vim.keymap.set("n", "<leader>dR", function()
-    require("dbt-helpers").insert_ref_interactive()
-end, { desc = "dbt: Insert ref() interactively" })
-
-vim.keymap.set("n", "<leader>ds", function()
-    require("dbt-helpers").insert_source()
-end, { desc = "dbt: Insert source()" })
-
-vim.keymap.set("n", "<leader>dc", function()
-    require("dbt-helpers").refresh_model_cache()
-end, { desc = "dbt: Clear model cache" })
+-- -- dbt-helpers keybindings
+-- vim.keymap.set("n", "<leader>dr", function()
+--     require("dbt-helpers").insert_ref()
+-- end, { desc = "dbt: Insert ref() manually" })
+--
+-- vim.keymap.set("n", "<leader>dR", function()
+--     require("dbt-helpers").insert_ref_interactive()
+-- end, { desc = "dbt: Insert ref() interactively" })
+--
+-- vim.keymap.set("n", "<leader>ds", function()
+--     require("dbt-helpers").insert_source()
+-- end, { desc = "dbt: Insert source()" })
+--
+-- vim.keymap.set("n", "<leader>dc", function()
+--     require("dbt-helpers").refresh_model_cache()
+-- end, { desc = "dbt: Clear model cache" })
 
 
 -- Aerial (Outline)
