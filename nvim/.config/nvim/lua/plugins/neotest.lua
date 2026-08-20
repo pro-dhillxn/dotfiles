@@ -4,6 +4,7 @@ return {
         "nvim-neotest/nvim-nio",
         "antoinemadec/FixCursorHold.nvim",
         "nvim-treesitter/nvim-treesitter",
+        "nvim-neotest/neotest-python"
     },
     keys = {
         { "<leader>tt", function() require("neotest").run.run() end,                     desc = "Run nearest test" },
@@ -17,6 +18,7 @@ return {
         require("neotest").setup({
             adapters = {
                 require("rustaceanvim.neotest"),
+                require("neotest-python")
             },
         })
     end,
