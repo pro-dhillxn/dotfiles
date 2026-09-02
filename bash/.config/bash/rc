@@ -27,7 +27,25 @@ function y() {
 }
 
 # activate python venv
-alias av='source .venv/bin/activate'
+# alias av='source .venv/bin/activate 2>/dev/null || source dbt/.venv/bin/activate'
+av() {
+    local venv_paths=(
+        ".venv/bin/activate"
+        "dbt/.venv/bin/activate"
+    )
+
+    for path in "${venv_paths[@]}"; do
+        if [ -f "$path" ]; then
+            source "$path"
+            echo "Activated virtual env: $path"
+            return 0
+        fi
+    done
+
+    echo "Error: No virtual env found in standard locations." >&2
+    return 1
+}
+
 alias dv='deactivate'
 
 # cd Aliases, eza
