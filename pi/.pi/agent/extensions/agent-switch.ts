@@ -13,6 +13,10 @@
  *
  * The active agent is persisted as an `active_agent` session entry.
  *
+ * Fresh sessions start in the `plan` (read-only) stage by default.
+ * Run `/build` to start implementing, or `/agent none` to return to
+ * the global permission policy.
+ *
  * IMPORTANT:
  * There is intentionally NO `agent_switch` LLM tool.
  *
@@ -30,6 +34,10 @@ import type {
 } from "@earendil-works/pi-coding-agent";
 
 const ACTIVE_AGENT_CUSTOM_TYPE = "active_agent";
+
+// Fresh sessions (no persisted active_agent entry) start in the
+// read-only planning stage. /build and /agent none escape it.
+const DEFAULT_AGENT_NAME = "plan";
 
 type ActiveAgentData = {
 	name: string | null;
@@ -310,7 +318,7 @@ export default function agentSwitchExtension(pi: ExtensionAPI) {
 		},
 	});
 
-	pi.on("session_start", (_event, ctx) => {
+	pi.on("session_start", (event, ctx) => {
 		const entries = ctx.sessionManager.getEntries();
 
 		const branch =
@@ -320,7 +328,28 @@ export default function agentSwitchExtension(pi: ExtensionAPI) {
 				}
 			).getBranch?.() ?? entries;
 
-		activeAgent = restoreFromSession(branch);
+		const hasAgentEntry = branch.some(
+			(entry) =>
+				(
+					entry as {
+						customType?: string;
+					}
+				)?.customType === ACTIVE_AGENT_CUSTOM_TYPE,
+		);
+
+		if (!hasAgentEntry) {
+			// Fresh session: start in the default planning stage.
+			// Persisting the entry lets pi-permission-system resolve the
+			// agent's permission: frontmatter from the very first turn.
+			activeAgent = DEFAULT_AGENT_NAME;
+			pi.appendEntry<ActiveAgentData>(ACTIVE_AGENT_CUSTOM_TYPE, {
+				name: DEFAULT_AGENT_NAME,
+			});
+		} else {
+			// Resume: honor the last saved state (agent name or an
+			// explicit `/agent none` reset).
+			activeAgent = restoreFromSession(branch);
+		}
 
 		ctx.ui.setStatus(
 			"agent-switch",
