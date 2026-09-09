@@ -27,10 +27,9 @@
         // Web tools from @ollama/pi-web-search.
         "web_search": "allow",
         "web_fetch": "allow",
-        // Questionnaire tool from @juicesharp/rpiv-ask-user-question.
-        "ask_user_question": "allow",
         // MCP proxy tool entry fallback (specific "mcp" rules override this).
-        "mcp": "ask"
+        "mcp": "ask",
+        "questionnaire": "allow"
     },
     // Bash command patterns (matched against the full command string).
     "bash": {
