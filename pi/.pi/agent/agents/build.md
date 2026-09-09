@@ -1,7 +1,7 @@
 ---
 name: build
 mode: primary
-description: Default coding engine (implements per the plan)
+description: Coding engine (implements per the plan)
 permission:
   tools:
     read: allow
