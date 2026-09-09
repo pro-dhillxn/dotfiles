@@ -1,0 +1,73 @@
+{
+    // Global permission policy for pi-permission-system
+    // Docs: https://pi.dev/packages/pi-permission-system
+    //
+    // States: "allow" (silent) | "deny" (hard block) | "ask" (confirm in UI)
+    // Wildcard sections (tools/bash/mcp/skills): last matching rule wins.
+    // Put broad fallbacks first, specific overrides after.
+    "defaultPolicy": {
+        "tools": "ask",
+        "bash": "ask",
+        "mcp": "ask",
+        "skills": "ask",
+        "special": "ask"
+    },
+    // Tools by registered name (built-ins and extension tools).
+    "tools": {
+        // Read-only file tools: safe, allow silently.
+        "read": "allow",
+        "grep": "allow",
+        "find": "allow",
+        "ls": "allow",
+        // Mutations: confirm every time.
+        "write": "ask",
+        "edit": "ask",
+        // Bash tool entry point; the "bash" section below decides per command.
+        "bash": "ask",
+        // Web tools from @ollama/pi-web-search.
+        "web_search": "allow",
+        "web_fetch": "allow",
+        // Questionnaire tool from @juicesharp/rpiv-ask-user-question.
+        "ask_user_question": "allow",
+        // MCP proxy tool entry fallback (specific "mcp" rules override this).
+        "mcp": "ask"
+    },
+    // Bash command patterns (matched against the full command string).
+    "bash": {
+        // Broad fallback first.
+        "*": "ask",
+        // Read-only git: allow silently.
+        "git status*": "allow",
+        "git diff*": "allow",
+        "git log*": "allow",
+        "git show*": "allow",
+        "git branch*": "allow",
+        "git stash list*": "allow",
+        // Common read-only commands: allow silently.
+        "ls*": "allow",
+        "cat*": "allow",
+        "echo*": "allow",
+        "pwd": "allow",
+        "date*": "allow",
+        "npm run build*": "allow"
+    },
+    // MCP targets (only applies to calls routed through a registered mcp tool).
+    "mcp": {
+        "*": "ask",
+        "mcp_status": "allow",
+        "mcp_list": "allow",
+        "mcp_search": "allow",
+        "mcp_describe": "allow"
+    },
+    // Skill name patterns (loading a skill = injecting its prompt).
+    "skills": {
+        "*": "ask"
+    },
+    // Reserved checks.
+    "special": {
+        // Hard-block doom-loop detection instead of looping the prompt.
+        "doom_loop": "deny",
+        // Path-bearing tools pointing outside the active working directory: checking with allow here.
+        "external_directory": "allow"
+    }
+}

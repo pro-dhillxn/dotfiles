@@ -1,0 +1,21 @@
+{
+  "defaultModel": "qwen3.8_32k:latest",
+  "defaultProvider": "ollama",
+  "defaultThinkingLevel": "medium",
+  "enableInstallTelemetry": false,
+  "hideThinkingBlock": false,
+  "lastChangelogVersion": "0.85.1",
+  "packages": [
+    "npm:pi-permission-system",
+    "npm:pi-zentui",
+    "npm:@ollama/pi-web-search"
+  ],
+  "terminal": {
+    "showTerminalProgress": true
+  },
+  "theme": "dark",
+  "tuiMode": "fullscreen",
+  "compaction": {
+    "enabled": false
+  }
+}

@@ -6,7 +6,7 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "Stowing packages..."
 cd "$DOTFILES_DIR"
-stow bash broot nvim starship tmux yazi
+stow bash broot nvim starship tmux yazi pi
 
 echo "Adding source line to ~/.bashrc..."
 SOURCE_LINE='[[ -f ~/.config/bash/rc ]] && source ~/.config/bash/rc'
