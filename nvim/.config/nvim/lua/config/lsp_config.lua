@@ -1,3 +1,5 @@
+-- PYTHON
+
 vim.lsp.config("basedpyright", {
     settings = {
         basedpyright = {
@@ -13,6 +15,24 @@ vim.lsp.config("basedpyright", {
             },
         },
     },
+})
+
+-- The Ruff LSP configuration
+vim.lsp.config("ruff", {
+    settings = {
+        -- This tells Ruff's LSP to use its native linting engine
+        lint = {
+            enable = true,
+            -- Optional: tells ruff to run on text change, or save
+            run = "onType",
+        },
+    },
+    -- Prevent duplicate hover popups (Let Basedpyright handle hover documentation)
+    on_attach = function(client, _bufnr) -- keeping bufnr for any future code actions needed
+        if client.name == "ruff" then
+            client.server_capabilities.hoverProvider = false
+        end
+    end,
 })
 
 
@@ -36,7 +56,7 @@ vim.lsp.config('yamlls', {})
 
 vim.lsp.config('jsonls', {})
 
-vim.lsp.enable({ "lua_ls", "basedpyright", "yamlls", "jsonls" })
+vim.lsp.enable({ "lua_ls", "basedpyright", "ruff", "yamlls", "jsonls" })
 
 -- ── Diagnostic appearance ─────────────────────────────────────────
 vim.diagnostic.config({
@@ -55,8 +75,8 @@ vim.diagnostic.config({
 })
 
 -- ── Diagnostic keymaps (global, always available) ─────────────────
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Prev diagnostic" })
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Prev diagnostic" })
+vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next diagnostic" })
 vim.keymap.set("n", "<leader>dd", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
 vim.keymap.set("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "Diagnostics loclist" })
 
