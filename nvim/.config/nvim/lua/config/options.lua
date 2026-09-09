@@ -1,3 +1,4 @@
+require("config.remote_clipboard").setup()
 -- Leaders must be set before lazy.nvim loads
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
