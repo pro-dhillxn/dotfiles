@@ -19,6 +19,7 @@ return {
             "vimdoc",
             "python",
             "sql",
+            "markdown", -- required by databricks.nvim (%md magic cell content highlighting)
             "yaml",
             "rust",
             "json",
