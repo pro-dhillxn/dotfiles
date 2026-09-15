@@ -48,7 +48,12 @@
         "echo*": "allow",
         "pwd": "allow",
         "date*": "allow",
-        "npm run build*": "allow"
+        "npm run build*": "allow",
+        // Python lint and formatting checks (non-mutating).
+        "ruff check*": "allow",
+        "ruff format --check*": "allow",
+        "python -m ruff check*": "allow",
+        "python -m ruff format --check*": "allow"
     },
     // MCP targets (only applies to calls routed through a registered mcp tool).
     "mcp": {

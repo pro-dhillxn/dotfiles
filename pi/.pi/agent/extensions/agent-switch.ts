@@ -13,9 +13,8 @@
  *
  * The active agent is persisted as an `active_agent` session entry.
  *
- * Fresh sessions start in the `plan` (read-only) stage by default.
- * Run `/build` to start implementing, or `/agent none` to return to
- * the global permission policy.
+ * Fresh sessions start with no stage agent (`none`) and use the global
+ * permission policy. Run `/plan` or `/build` to activate a stage agent.
  *
  * IMPORTANT:
  * There is intentionally NO `agent_switch` LLM tool.
@@ -35,9 +34,9 @@ import type {
 
 const ACTIVE_AGENT_CUSTOM_TYPE = "active_agent";
 
-// Fresh sessions (no persisted active_agent entry) start in the
-// read-only planning stage. /build and /agent none escape it.
-const DEFAULT_AGENT_NAME = "plan";
+// Fresh sessions (no persisted active_agent entry) start with no stage
+// agent and use the standard prompts and global permission policy.
+const DEFAULT_AGENT_NAME: string | null = null;
 
 type ActiveAgentData = {
 	name: string | null;
@@ -338,9 +337,8 @@ export default function agentSwitchExtension(pi: ExtensionAPI) {
 		);
 
 		if (!hasAgentEntry) {
-			// Fresh session: start in the default planning stage.
-			// Persisting the entry lets pi-permission-system resolve the
-			// agent's permission: frontmatter from the very first turn.
+			// Fresh session: explicitly persist the default (`none`) state so
+			// pi-permission-system uses the global policy from the first turn.
 			activeAgent = DEFAULT_AGENT_NAME;
 			pi.appendEntry<ActiveAgentData>(ACTIVE_AGENT_CUSTOM_TYPE, {
 				name: DEFAULT_AGENT_NAME,
