@@ -26,6 +26,8 @@ permission:
     ls *: allow
     tree: allow
     tree *: allow
+    grep: allow
+    grep *: allow
     rg: allow
     rg *: allow
     fd: allow
