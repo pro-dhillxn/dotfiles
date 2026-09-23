@@ -25,6 +25,7 @@ return {
             "json",
             "jinja",        -- dbt / Jinja templating in .sql files
             "jinja_inline", -- required by the jinja parser
+            "html"
         }
 
         -- Install any parsers that aren't present yet (async, no-op if installed).
