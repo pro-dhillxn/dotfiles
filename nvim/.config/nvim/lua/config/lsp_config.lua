@@ -58,7 +58,11 @@ vim.lsp.config('jsonls', {})
 
 vim.lsp.config("html", {})
 
-vim.lsp.enable({ "lua_ls", "basedpyright", "ruff", "yamlls", "jsonls", "html" })
+vim.lsp.config("htmx", {
+    filetypes = { "html" }
+})
+
+vim.lsp.enable({ "lua_ls", "basedpyright", "ruff", "yamlls", "jsonls", "html", "htmx" })
 
 -- ── Diagnostic appearance ─────────────────────────────────────────
 vim.diagnostic.config({
