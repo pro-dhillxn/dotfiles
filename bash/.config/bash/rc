@@ -97,3 +97,5 @@ alias gsp='git stash pop'
 # nvim for manpages
 export MANPAGER='nvim +Man!'
 
+# don't allow short commands in history
+export HISTIGNORE="?:??:???:$HISTIGNORE"
