@@ -56,13 +56,50 @@ vim.lsp.config('yamlls', {})
 
 vim.lsp.config('jsonls', {})
 
-vim.lsp.config("html", {})
-
-vim.lsp.config("htmx", {
-    filetypes = { "html" }
+-- Default filetypes for jinja_lsp are just { 'jinja' }, so it never attaches
+-- to our .html templates (ft=html, or htmldjango if that's ever configured).
+-- Extend it the same way as the html/htmx/tailwindcss servers below.
+vim.lsp.config('jinja_lsp', {
+    filetypes = { 'jinja', 'html', 'htmldjango', 'rust', 'python' },
 })
 
-vim.lsp.enable({ "lua_ls", "basedpyright", "ruff", "yamlls", "jsonls", "html", "htmx" })
+-- vscode-html-language-server only handles documents whose LSP `languageId`
+-- is "html". Neovim sends `filetype` as the languageId, so on Jinja/Django
+-- templates (ft=htmldjango) it would silently no-op. Remap it here.
+vim.lsp.config("html", {
+    filetypes = { "html", "htmldjango" },
+    get_language_id = function(_bufnr, ftype)
+        if ftype == "htmldjango" then
+            return "html"
+        end
+        return ftype
+    end,
+})
+
+vim.lsp.config("htmx", {
+    filetypes = { "html", "htmldjango" },
+    get_language_id = function(_bufnr, ftype)
+        if ftype == "htmldjango" then
+            return "html"
+        end
+        return ftype
+    end,
+})
+
+-- tailwindcss server has a hard allow-list of languageIds. Extend it via
+-- `includeLanguages` so htmldjango buffers are treated as html.
+vim.lsp.config("tailwindcss", {
+    filetypes = { "html", "htmldjango" },
+    settings = {
+        tailwindCSS = {
+            includeLanguages = {
+                htmldjango = "html",
+            },
+        },
+    },
+})
+
+vim.lsp.enable({ "lua_ls", "basedpyright", "ruff", "yamlls", "jsonls", "html", "tailwindcss", "jinja_lsp" })
 
 -- ── Diagnostic appearance ─────────────────────────────────────────
 vim.diagnostic.config({

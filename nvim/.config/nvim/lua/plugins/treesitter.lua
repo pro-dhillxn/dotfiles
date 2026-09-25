@@ -25,7 +25,10 @@ return {
             "json",
             "jinja",        -- dbt / Jinja templating in .sql files
             "jinja_inline", -- required by the jinja parser
-            "html"
+            "html",
+            "htmldjango",
+            "html_tags",
+            "css"
         }
 
         -- Install any parsers that aren't present yet (async, no-op if installed).

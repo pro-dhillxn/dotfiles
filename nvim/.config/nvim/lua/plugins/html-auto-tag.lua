@@ -10,6 +10,9 @@ return {
                 enable_rename = true,          -- Rename closing tag when you edit the opening tag
                 enable_close_on_slash = false, -- Closes tag when typing '</' instead of '>'
             },
+            aliases = {
+                ["htmldjango"] = "html"
+            }
         })
     end,
 }
