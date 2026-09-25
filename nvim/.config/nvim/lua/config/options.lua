@@ -77,6 +77,7 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevel = 99 -- Keep folds open by default
 vim.opt.foldlevelstart = 99
+vim.o.winborder = 'rounded'
 
 -- C Compiler mingw for windows
 if vim.fn.has("win32") == 1 then

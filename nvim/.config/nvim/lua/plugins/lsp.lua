@@ -8,9 +8,15 @@ return {
             keymap = { preset = "super-tab" },
             appearance = { nerd_font_variant = "mono" },
             sources = { default = { "lsp", "path", "snippets", "buffer" } },
+            -- https://cmp.saghen.dev/configuration/completion.html#menu
             completion = {
-                documentation = { auto_show = true, auto_show_delay_ms = 100 },
+                documentation = { auto_show = true, auto_show_delay_ms = 200 },
                 ghost_text = { enabled = true },
+                menu = {
+                    draw = {
+                        columns = { { "kind_icon" }, { "label", "label_description", gap = 1 }, { "source_name" } },
+                    },
+                },
             },
             snippets = { preset = "default" },
             fuzzy = { implementation = "prefer_rust_with_warning" },
