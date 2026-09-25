@@ -93,6 +93,10 @@ permission:
     git branch *: allow
     git remote: allow
     git remote *: allow
+    query-dbx: allow
+    query-dbx *: allow
+    query-syn: allow
+    query-syn *: allow
   powershell: deny
   mcp:
     "*": ask
