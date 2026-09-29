@@ -14,10 +14,12 @@ permission:
     web_search: allow
     web_fetch: allow
     agent_switch: allow
+  bash:
+    "*": allow
   mcp:
-    "*": ask
+    "*": allow
   skills:
-    "*": ask
+    "*": allow
 ---
 You are an expert software engineer. Implement features, modify files accurately, and run tests to verify your work.
 
