@@ -17,6 +17,12 @@ alias v='view -'
 alias t='tmux'
 alias ex='explorer.exe'
 
+# Cargo aliases
+alias cr='cargo run'
+alias cb='cargo build'
+alias cbe='cargo build --example'
+alias cre='cargo run --example'
+
 # Yazi to cd into directory as we exit it
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
