@@ -1,0 +1,58 @@
+--- a/src/index.ts
++++ b/src/index.ts
+@@ -294,6 +294,33 @@
+   return null;
+ }
+
++// Like getActiveAgentName(), but distinguishes an explicit "default" state
++// (`{ name: null }`) from the absence of any active_agent entry.
++//   - { name: "plan" } -> { name: "plan" }
++//   - { name: null }   -> { name: null }   (explicit default)
++//   - no entry         -> undefined         (unknown / fall back)
++function getActiveAgentEntry(ctx: ExtensionContext): { name: string | null } | undefined {
++  const entries = ctx.sessionManager.getEntries();
++  for (let i = entries.length - 1; i >= 0; i--) {
++    const entry = entries[i] as { type: string; customType?: string; data?: unknown };
++    if (entry.type !== "custom" || entry.customType !== "active_agent") {
++      continue;
++    }
++
++    const data = entry.data as { name?: unknown } | undefined;
++    const normalizedName = normalizeAgentName(data?.name);
++    if (normalizedName) {
++      return { name: normalizedName };
++    }
++
++    if (data?.name === null) {
++      return { name: null };
++    }
++  }
++
++  return undefined;
++}
++
+ function getActiveAgentNameFromSystemPrompt(systemPrompt: string | undefined): string | null {
+   if (!systemPrompt) {
+     return null;
+@@ -1773,10 +1800,17 @@
+   };
+ 
+   const resolveAgentName = (ctx: ExtensionContext, systemPrompt?: string): string | null => {
+-    const fromSession = getActiveAgentName(ctx);
+-    if (fromSession) {
+-      lastKnownActiveAgentName = fromSession;
+-      return fromSession;
++    // NOTE: an explicit `{ name: null }` active_agent entry means "return to
++    // the default agent" and must be distinguished from "no active_agent
++    // entry recorded yet". getActiveAgentName() collapses both into null, so
++    // we check for the presence of an explicit entry first. Without this,
++    // switching plan/build -> default would keep the stale
++    // lastKnownActiveAgentName and never lift the previous agent's
++    // restrictions.
++    const sessionEntry = getActiveAgentEntry(ctx);
++    if (sessionEntry) {
++      lastKnownActiveAgentName = sessionEntry.name;
++      return sessionEntry.name;
+     }
+ 
+     const fromSystemPrompt = getActiveAgentNameFromSystemPrompt(systemPrompt);
