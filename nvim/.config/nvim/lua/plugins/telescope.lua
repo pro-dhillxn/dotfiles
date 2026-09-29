@@ -18,6 +18,16 @@ return {
         require("telescope").setup({
             pickers = {
                 buffers = {
+                    path_display = function(_, path)
+                        local parent = vim.fn.fnamemodify(path, ":h:t")
+                        local name = vim.fn.fnamemodify(path, ":t")
+
+                        if parent == "." then
+                            return name
+                        end
+
+                        return parent .. "/" .. name
+                    end,
                     mappings = {
                         n = {
                             ["x"] = require("telescope.actions").delete_buffer,
