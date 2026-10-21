@@ -29,7 +29,12 @@
         "web_fetch": "allow",
         // MCP proxy tool entry fallback (specific "mcp" rules override this).
         "mcp": "ask",
-        "questionnaire": "allow"
+        "questionnaire": "allow",
+        // Hide powershell entirely: deny -> extension excludes it from active tools.
+        "powershell": "deny",
+        // Codemode + tool discovery: allow silently so batched scripts and tool lookups don't prompt.
+        "codemode": "allow",
+        "tool_search": "allow"
     },
     // Bash command patterns (matched against the full command string).
     "bash": {
