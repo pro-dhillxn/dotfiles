@@ -6,6 +6,9 @@ return {
         event = "InsertEnter",
         opts = {
             keymap = { preset = "super-tab" },
+            cmdline = {
+                enabled = true
+            },
             appearance = { nerd_font_variant = "mono" },
             sources = { default = { "lsp", "path", "snippets", "buffer" } },
             -- https://cmp.saghen.dev/configuration/completion.html#menu
