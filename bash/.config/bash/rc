@@ -60,9 +60,11 @@ alias dv='deactivate'
 # cd Aliases, eza
 alias ..='cd ../'
 alias ...='cd ../..'
-alias ls='eza -lh --group-directories-first --icons=always --git'
+alias ls='ls --color=auto'
+alias els='eza -lh --group-directories-first --icons=always --git'
 alias lsa='ls -a'
-alias lt='eza --tree --group-directories-first --level=2 --long --icons=always --git'  # we can override the depth level by -L<depth>
+alias ltl='ls -l'
+alias elt='eza --tree --group-directories-first --level=2 --long --icons=always --git'  # we can override the depth level by -L<depth>
 alias lta='lt -a'
 
 # Starship init
@@ -93,6 +95,8 @@ alias gf='git fetch'
 alias gp='git pull'
 alias gfp='git fetch && git pull'
 alias gs='git status'
+alias gsw='git switch'
+alias gst='git stash'
 
 
 # nvim for manpages
