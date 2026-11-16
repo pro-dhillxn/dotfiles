@@ -8,100 +8,18 @@ permission:
     grep: allow
     find: allow
     ls: allow
+    write: allow
+    edit: allow
+    bash: allow
     web_search: allow
     web_fetch: allow
-    ask_user_question: allow
     agent_switch: allow
-    bash: ask
-    write: deny
-    write:*/plan_*.md: allow
-    write:*/plan_current.md: allow
-    edit: deny
-    edit:*/plan_*.md: allow
-    edit:*/plan_current.md: allow
   bash:
-    "*": deny
-    pwd: allow
-    grep *: allow
-    ls: allow
-    ls *: allow
-    tree: allow
-    tree *: allow
-    grep: allow
-    grep *: allow
-    rg: allow
-    rg *: allow
-    fd: allow
-    fd *: allow
-    find: allow
-    find *: allow
-    cat: allow
-    cat *: allow
-    head: allow
-    head *: allow
-    tail: allow
-    tail *: allow
-    stat: allow
-    stat *: allow
-    file: allow
-    file *: allow
-    wc: allow
-    wc *: allow
-    sort: allow
-    sort *: allow
-    uniq: allow
-    uniq *: allow
-    jq: allow
-    jq *: allow
-    awk: allow
-    awk *: allow
-    sed: allow
-    sed *: allow
-    sed -i*: deny
-    sed --in-place*: deny
-    cut: allow
-    cut *: allow
-    tr: allow
-    tr *: allow
-    diff: allow
-    diff *: allow
-    which: allow
-    which *: allow
-    type: allow
-    type *: allow
-    env: allow
-    printenv: allow
-    uname: allow
-    whoami: allow
-    id: allow
-    date: allow
-    ps: allow
-    ps *: allow
-    du: allow
-    du *: allow
-    df: allow
-    df *: allow
-    git status: allow
-    git status *: allow
-    git log: allow
-    git log *: allow
-    git diff: allow
-    git diff *: allow
-    git show: allow
-    git show *: allow
-    git branch: allow
-    git branch *: allow
-    git remote: allow
-    git remote *: allow
-    query-dbx: allow
-    query-dbx *: allow
-    query-syn: allow
-    query-syn *: allow
-  powershell: deny
+    "*": allow
   mcp:
-    "*": ask
+    "*": allow
   skills:
-    "*": ask
+    "*": allow
 ---
 You are a planning assistant that maps code and produces a precise implementation plan.
 
