@@ -1,5 +1,4 @@
 -- PYTHON
-
 vim.lsp.config("basedpyright", {
     settings = {
         basedpyright = {
@@ -40,8 +39,6 @@ vim.lsp.config("ruff", {
 -- rustaceanvim (see lua/plugins/neotest_rust_adapter.lua) owns the
 -- rust-analyzer client. Enabling it via lspconfig too would attach a
 -- second client, causing duplicate completion/hover/inlay entries.
-
-
 vim.lsp.config('lua_ls', {
     settings = {
         Lua = {
@@ -53,8 +50,10 @@ vim.lsp.config('lua_ls', {
 })
 
 vim.lsp.config('yamlls', {})
-
 vim.lsp.config('jsonls', {})
+vim.lsp.config('qmlls', {
+    cmd = { "/usr/lib/qt6/bin/qmlls" }
+})
 
 -- Default filetypes for jinja_lsp are just { 'jinja' }, so it never attaches
 -- to our .html templates (ft=html, or htmldjango if that's ever configured).
@@ -99,7 +98,7 @@ vim.lsp.config("tailwindcss", {
     },
 })
 
-vim.lsp.enable({ "lua_ls", "basedpyright", "ruff", "yamlls", "jsonls", "html", "tailwindcss", "jinja_lsp" })
+vim.lsp.enable({ "lua_ls", "basedpyright", "ruff", "yamlls", "jsonls", "html", "tailwindcss", "jinja_lsp", "qmlls" })
 
 -- ── Diagnostic appearance ─────────────────────────────────────────
 vim.diagnostic.config({

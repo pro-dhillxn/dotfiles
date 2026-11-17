@@ -28,7 +28,8 @@ return {
             "html",
             "htmldjango",
             "html_tags",
-            "css"
+            "css",
+            "qmljs"
         }
 
         -- Install any parsers that aren't present yet (async, no-op if installed).

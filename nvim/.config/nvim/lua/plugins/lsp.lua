@@ -37,7 +37,7 @@ return {
             "saghen/blink.cmp", -- ensures capabilities patched before servers start
         },
         opts = {
-            ensure_installed = { "lua_ls", "basedpyright", "rust_analyzer", "yamlls", "html", "htmx", "jsonls", "ruff", "tailwindcss" },
+            ensure_installed = { "lua_ls", "basedpyright", "rust_analyzer", "yamlls", "html", "htmx", "jsonls", "ruff", "tailwindcss", "qmlls" },
             automatic_enable = false,
         },
     },
