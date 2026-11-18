@@ -7,6 +7,7 @@ import QtQuick
 
 Singleton {
     readonly property color bg: "#1a1b26"
+    readonly property color bgTranslucent: Qt.rgba(bg.r, bg.g, bg.b, 0.9)
     readonly property color fg: "#a9b1d6"
     readonly property color muted: "#444b6a"
     readonly property color accent: "#7aa2f7"

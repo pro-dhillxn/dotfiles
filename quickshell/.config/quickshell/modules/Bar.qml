@@ -18,7 +18,12 @@ Variants {
             right: true
         }
         implicitHeight: Theme.barHeight
-        color: Theme.bg
+        color: "transparent"
+
+        Rectangle {
+            anchors.fill: parent
+            color: Theme.bgTranslucent
+        }
 
         // --- Left: workspaces + title ---
         RowLayout {
